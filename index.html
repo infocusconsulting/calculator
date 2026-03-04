@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Ops Cost Calculator | In Focus Consulting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:wght@400;600;700&family=Wix+Madefor+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Wix Madefor Text', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2D3748;
+            background: #F5F7FA;
+        }
+        .header {
+            background: #2D3748;
+            padding: 40px 0 30px;
+            text-align: center;
+            border-top: 4px solid #3E6BA1;
+        }
+        .header h1 {
+            font-family: 'Wix Madefor Display', 'Wix Madefor Text', Helvetica, sans-serif;
+            color: #fff;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: #A0AEC0;
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px 60px;
+        }
+        .section {
+            background: #fff;
+            border-radius: 6px;
+            padding: 28px 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .section-title {
+            font-family: 'Wix Madefor Display', 'Wix Madefor Text', Helvetica, sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #2D3748;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-num {
+            background: #3E6BA1;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Wix Madefor Display', 'Wix Madefor Text', Helvetica, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .section-desc {
+            font-size: 15px;
+            color: #718096;
+            margin-bottom: 20px;
+        }
+        .input-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+        .input-group {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: #2D3748;
+            margin-bottom: 4px;
+        }
+        .input-group .hint {
+            font-size: 13px;
+            color: #718096;
+            margin-bottom: 4px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            font-family: 'Wix Madefor Text', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            color: #2D3748;
+            transition: border-color 0.2s;
+            margin-top: auto;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #3E6BA1;
+            box-shadow: 0 0 0 2px rgba(62,107,161,0.15);
+        }
+        .calc-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 10px auto 0;
+            padding: 14px 30px;
+            background: #D97B3D;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Wix Madefor Text', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .calc-btn:hover { background: #c06a30; }
+        .results { display: none; }
+        .results.visible { display: block; }
+        .results-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .results-header h2 {
+            font-family: 'Wix Madefor Display', 'Wix Madefor Text', Helvetica, sans-serif;
+            color: #2D3748;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .total-card {
+            background: #2D3748;
+            border-radius: 6px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .total-label {
+            color: #FFFFFF;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+        .total-amount {
+            font-family: 'Wix Madefor Display', 'Wix Madefor Text', Helvetica, sans-serif;
+            font-size: 52px;
+            color: #D97B3D;
+            font-weight: 700;
+        }
+        .total-sub {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 15px;
+            margin-top: 8px;
+        }
+        .conservative-note {
+            background: #F7FAFC;
+            border-left: 3px solid #3E6BA1;
+            border-radius: 4px;
+            padding: 14px 18px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #4A5568;
+            line-height: 1.6;
+        }
+        .conservative-note strong {
+            color: #2D3748;
+        }
+        .breakdown {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .breakdown-card {
+            flex: 1;
+            min-width: 200px;
+            background: #fff;
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            border-top: 3px solid #3E6BA1;
+        }
+        .breakdown-card .b-label {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 4px;
+        }
+        .breakdown-card .b-amount {
+            font-family: 'Wix Madefor Display', 'Wix Madefor Text', Helvetica, sans-serif;
+            font-size: 26px;
+            color: #3E6BA1;
+            font-weight: 700;
+        }
+        .breakdown-card .b-detail {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 6px;
+        }
+        .cta-section {
+            background: #fff;
+            border-radius: 6px;
+            padding: 30px;
+            text-align: center;
+            border-left: 4px solid #D97B3D;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .cta-section h3 {
+            font-family: 'Wix Madefor Display', 'Wix Madefor Text', Helvetica, sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #2D3748;
+            margin-bottom: 10px;
+        }
+        .cta-section p {
+            color: #718096;
+            font-size: 15px;
+            margin-bottom: 16px;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cta-link {
+            display: inline-block;
+            padding: 12px 28px;
+            background: #3E6BA1;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 15px;
+            margin: 0 8px 8px;
+            transition: background 0.2s;
+        }
+        .cta-link:hover { background: #2D5986; }
+        .cta-link.secondary {
+            background: transparent;
+            color: #3E6BA1;
+            border: 2px solid #3E6BA1;
+        }
+        .cta-link.secondary:hover {
+            background: #3E6BA1;
+            color: #fff;
+        }
+        .methodology {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #718096;
+            text-align: center;
+            line-height: 1.7;
+        }
+        .methodology strong { color: #2D3748; }
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #718096;
+            font-size: 13px;
+        }
+        .footer a { color: #3E6BA1; }
+        @media (max-width: 600px) {
+            .header h1 { font-size: 22px; }
+            .total-amount { font-size: 38px; }
+            .breakdown { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Creative Ops Cost Calculator</h1>
+    <p>Estimate how much your team is losing each year to operational waste, and see the financial case for fixing it.</p>
+</div>
+
+<div class="container">
+
+    <!-- SECTION 1: Team basics -->
+    <div class="section">
+        <div class="section-title"><span class="section-num">1</span> Your Team</div>
+        <div class="section-desc">Basic information about your creative team's size and cost.</div>
+        <div class="input-row">
+            <div class="input-group">
+                <label>Team size (full-time equivalents)</label>
+                <div class="hint">Include full-time staff and regular contractors</div>
+                <input type="number" id="teamSize" value="15" min="1">
+            </div>
+            <div class="input-group">
+                <label>Average fully loaded hourly rate ($)</label>
+                <div class="hint">Salary + benefits + overhead, divided by ~2,000 hrs/yr</div>
+                <input type="number" id="hourlyRate" value="90" min="1">
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: Interruptions -->
+    <div class="section">
+        <div class="section-title"><span class="section-num">2</span> Interruptions</div>
+        <div class="section-desc">Unplanned interruptions: "quick questions," Slack pings, walk-ups, ad hoc requests. Each one carries a hidden refocus cost that compounds across your team.</div>
+        <div class="input-row">
+            <div class="input-group">
+                <label>Avg interruptions per person per day</label>
+                <input type="number" id="interruptions" value="5" min="0">
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: Meetings -->
+    <div class="section">
+        <div class="section-title"><span class="section-num">3</span> Meetings</div>
+        <div class="section-desc">Recurring meetings your team attends each week. Think about status meetings, check-ins, and syncs. How many of them could be an async update instead?</div>
+        <div class="input-row">
+            <div class="input-group">
+                <label>Recurring meetings per week (team total)</label>
+                <input type="number" id="meetingsPerWeek" value="2" min="0">
+            </div>
+            <div class="input-group">
+                <label>How many could be replaced by async updates?</label>
+                <input type="number" id="unnecessaryMeetings" value="1" min="0">
+            </div>
+        </div>
+        <div class="input-row">
+            <div class="input-group">
+                <label>Avg attendees per meeting (from your team)</label>
+                <input type="number" id="avgAttendees" value="15" min="1">
+            </div>
+            <div class="input-group">
+                <label>Avg meeting length (hours)</label>
+                <input type="number" id="meetingLength" value="1" min="0.25" step="0.25">
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 4: Revision cycles -->
+    <div class="section">
+        <div class="section-title"><span class="section-num">4</span> Revision Cycles</div>
+        <div class="section-desc">Rework caused by unclear briefs, misaligned expectations, or stakeholder miscommunication. Research shows miscommunication drives 26% of all rework.</div>
+        <div class="input-row">
+            <div class="input-group">
+                <label>Projects per year</label>
+                <input type="number" id="projects" value="200" min="0">
+            </div>
+            <div class="input-group">
+                <label>Avoidable revision rounds per project</label>
+                <input type="number" id="avoidableRounds" value="5" min="0">
+            </div>
+        </div>
+        <div class="input-row">
+            <div class="input-group">
+                <label>Avg hours per revision round</label>
+                <div class="hint">Total hours across all participants per round</div>
+                <input type="number" id="hoursPerRound" value="6" min="0" step="0.5">
+            </div>
+        </div>
+    </div>
+
+    <button class="calc-btn" onclick="calculate()">Calculate My Team's Operational Waste</button>
+
+    <!-- RESULTS -->
+    <div class="results" id="results">
+
+        <div class="results-header">
+            <h2>Your Team's Estimated Annual Waste</h2>
+        </div>
+
+        <div class="total-card">
+            <div class="total-label">Estimated total operational waste per year</div>
+            <div class="total-amount" id="totalAmount">$0</div>
+            <div class="total-sub">This money is already being spent. Recovering even a fraction changes the budget conversation.</div>
+        </div>
+
+        <div class="conservative-note">
+            <strong>These estimates are conservative.</strong> The calculation uses your creative team's hourly rate for all time spent, but revision rounds and meetings often involve senior stakeholders whose time costs significantly more. It also excludes downstream costs like missed deadlines, delayed launches, and lost revenue. The actual financial impact is likely higher.
+        </div>
+
+        <div class="breakdown">
+            <div class="breakdown-card">
+                <div class="b-label">Interruption Cost</div>
+                <div class="b-amount" id="intCost">$0</div>
+                <div class="b-detail" id="intDetail"></div>
+            </div>
+            <div class="breakdown-card">
+                <div class="b-label">Unnecessary Meeting Cost</div>
+                <div class="b-amount" id="mtgCost">$0</div>
+                <div class="b-detail" id="mtgDetail"></div>
+            </div>
+            <div class="breakdown-card">
+                <div class="b-label">Revision Waste</div>
+                <div class="b-amount" id="revCost">$0</div>
+                <div class="b-detail" id="revDetail"></div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h3>What happens with these numbers next?</h3>
+            <p>Knowing the total is the starting point. Knowing which data matters to your specific leadership, how to frame it, and how to present it in a way that changes budget decisions takes experience across dozens of organizations.</p>
+            <a href="https://www.infocusconsulting.net/creative-ops-assessment" target="_blank" class="cta-link">Take the Creative Ops Assessment</a>
+            <a href="https://www.infocusconsulting.net" target="_blank" class="cta-link secondary">Learn More</a>
+        </div>
+
+        <div class="methodology">
+            <strong>Methodology:</strong> Interruption costs use the 23-minute refocus finding from Gloria Mark's research at UC Irvine.
+            Meeting costs reflect the full salary cost of unnecessary meetings plus refocus time for each attendee.
+            Revision costs use direct hourly rates multiplied by avoidable rounds. All calculations use fully loaded hourly rates
+            and assume 250 working days per year. Actual results vary by organization.
+        </div>
+
+    </div>
+</div>
+
+<div class="footer">
+    <p>&copy; 2026 In Focus Consulting | <a href="https://www.infocusconsulting.net">infocusconsulting.net</a></p>
+</div>
+
+<script>
+function fmt(n) {
+    return '$' + Math.round(n).toLocaleString();
+}
+
+function calculate() {
+    var teamSize = parseFloat(document.getElementById('teamSize').value) || 0;
+    var hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+    var interruptions = parseFloat(document.getElementById('interruptions').value) || 0;
+    var workDays = 250;
+    var meetingsPerWeek = parseFloat(document.getElementById('meetingsPerWeek').value) || 0;
+    var unnecessaryMeetings = parseFloat(document.getElementById('unnecessaryMeetings').value) || 0;
+    var avgAttendees = parseFloat(document.getElementById('avgAttendees').value) || 0;
+    var meetingLength = parseFloat(document.getElementById('meetingLength').value) || 0;
+    var projects = parseFloat(document.getElementById('projects').value) || 0;
+    var avoidableRounds = parseFloat(document.getElementById('avoidableRounds').value) || 0;
+    var hoursPerRound = parseFloat(document.getElementById('hoursPerRound').value) || 0;
+
+    // Interruption cost: each interruption = 23.25 min refocus
+    var refocusHoursPerDay = (interruptions * 23.25) / 60;
+    var intCost = refocusHoursPerDay * teamSize * workDays * hourlyRate;
+    var intHours = Math.round(refocusHoursPerDay * teamSize * workDays);
+
+    // Meeting waste: full cost of unnecessary meetings + refocus time
+    // Cap unnecessary meetings at total meetings
+    var cappedUnnecessary = Math.min(unnecessaryMeetings, meetingsPerWeek);
+    var weeklyDirectHours = cappedUnnecessary * avgAttendees * meetingLength;
+    // Each unnecessary meeting also costs 23.25 min refocus per attendee
+    var weeklyRefocusHours = (cappedUnnecessary * avgAttendees * 23.25) / 60;
+    var totalWeeklyMtgWaste = weeklyDirectHours + weeklyRefocusHours;
+    var mtgCost = totalWeeklyMtgWaste * 50 * hourlyRate;
+    var mtgHours = Math.round(totalWeeklyMtgWaste * 50);
+
+    // Revision waste
+    var revCost = projects * avoidableRounds * hoursPerRound * hourlyRate;
+    var revHours = Math.round(projects * avoidableRounds * hoursPerRound);
+
+    var total = intCost + mtgCost + revCost;
+
+    document.getElementById('totalAmount').textContent = fmt(total);
+    document.getElementById('intCost').textContent = fmt(intCost);
+    document.getElementById('intDetail').textContent = intHours.toLocaleString() + ' hours lost to refocus time';
+    document.getElementById('mtgCost').textContent = fmt(mtgCost);
+    document.getElementById('mtgDetail').textContent = mtgHours.toLocaleString() + ' hours in unnecessary meetings';
+    document.getElementById('revCost').textContent = fmt(revCost);
+    document.getElementById('revDetail').textContent = revHours.toLocaleString() + ' hours in avoidable rework';
+
+    document.getElementById('results').classList.add('visible');
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
